@@ -1,15 +1,18 @@
-import pygame, random
+import pygame, random, math
 
 class Rocket:
     def __init__(self, rocket, x, y):
-        self.x = x 
+        self.x = x
         self.y = y
         self.rocket = rocket
         self.flames = []
         self.flame_life_time = 0.2
 
-    def propell(self):
-        self.y -= 2
+    def propell(self, dt):
+        self.y -= 120 * dt
+
+    def rotate(self):
+        pass
 
     def circle_surf(self, radius, color):
         surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
@@ -33,10 +36,10 @@ class Rocket:
             pygame.draw.circle(win, (222, 186, 44), [int(flame[0][0]), int(flame[0][1])], int(flame[2]))
 
             radius = int(flame[2]) * 2
-            win.blit(self.circle_surf(radius, (212, 99, 51)), (int(flame[0][0] - radius), int(flame[0][1]) - radius), special_flags=pygame.BLEND_RGBA_MAX)
+            win.blit(self.circle_surf(radius, (212, 99, 51)), (int(flame[0][0] - radius), int(flame[0][1]) - radius), special_flags=pygame.BLEND_RGB_ADD)
 
             if flame[2] <= 0:
                 self.flames.remove(flame)
-    
+
     def show(self, win):
         win.blit(self.rocket, (self.x, self.y))

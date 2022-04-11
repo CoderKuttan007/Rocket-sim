@@ -19,19 +19,28 @@ rocket_img = scale_img(pygame.image.load('Assets/rocket.png').convert_alpha(), 1
 rocket = Rocket(rocket_img, window_size[0] // 2 - rocket_img.get_width() // 2, window_size[1])
 
 while running:
-    win.fill((10, 10, 10))
+    win.fill((0, 0, 0))
+
+    dt = clock.tick(FPS) / 1000
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_s:
+                FPS = 30
+        if e.type == pygame.KEYUP:
+            if e.key == pygame.K_s:
+                FPS = 120
+
 
     rocket.propellant_particles(win)
     rocket.show(win)
-    rocket.propell()
+    rocket.propell(dt)
+    rocket.rotate()
 
     if rocket.y < -200:
         rocket.y = window_size[1]
 
-    clock.tick(FPS)
     pygame.display.update()
